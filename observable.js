@@ -1,4 +1,4 @@
-import { eventful } from './eventful.js';
+import { eventful as nbjsEventful } from 'nbjs-eventful';
 
 /**
  * Creates an observable object/array/primitive that emits events on changes.
@@ -14,7 +14,15 @@ import { eventful } from './eventful.js';
  * @param {*} value The initial value (object, array, or primitive).
  * @returns {Object} The proxied observable (augmented by `eventful`).
  */
-export function observable(value) {
+export function observable(value, options) {
+  const { eventful = nbjsEventful } =
+    options || {};
+
+  if (typeof eventful !== 'function') {
+    throw new TypeError(
+      `observable: 'eventful' option must be a function if provided`);
+  }
+
   const hasOwn =
     (obj, key) =>
       Object.prototype.hasOwnProperty.call(obj, key);
@@ -177,29 +185,30 @@ export function observable(value) {
   }
 
   // Primitives → boxed with a single 'value' slot
-  return eventful({
-    get value() {
-      return value;
-    },
-    set value(v) {
-      if (Object.is(v, value))
-        return;
-
-      const previous = value;
-      value = v;
-
-      const payload =
-        { property: 'value',
-          value,
-          previous };
-
-      this.emit(
-        'set',
-        payload);
-
-      this.emit(
-        'set:value',
-        payload);
-    }
-  });
+  return eventful(
+    {
+      get value() {
+        return value;
+      },
+      set value(v) {
+        if (Object.is(v, value))
+          return;
+  
+        const previous = value;
+        value = v;
+  
+        const payload =
+          { property: 'value',
+            value,
+            previous };
+  
+        this.emit(
+          'set',
+          payload);
+  
+        this.emit(
+          'set:value',
+          payload);
+      }
+    });
 }
