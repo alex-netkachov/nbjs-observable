@@ -29,6 +29,6 @@
     "coverage": "NODE_V8_COVERAGE=.coverage node --test && node -e \"console.log('Coverage in .coverage (use c8/istanbul if you want reports)')\""
   },
   "dependencies": {
-    "nbjs-eventful": "^0.1.1"
+    "nbjs-eventful": "^0.1.2"
   }
 }
