@@ -1,6 +1,6 @@
 {
   "name": "nbjs-observable",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lightweight observable for JS. Emits events on property changes via on/off/emit. Works with objects, arrays, and primitives.",
   "keywords": [
     "events",
